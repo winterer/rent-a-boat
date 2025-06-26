@@ -6,8 +6,19 @@ readme = "README.md"
 authors = [
     { name = "Mario Winterer", email = "mario.winterer@scch.at" }
 ]
-requires-python = ">=3.13"
-dependencies = []
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0,<0.110.0",
+    "uvicorn[standard]>=0.22.0,<0.24.0",
+    "pydantic>=1.10.0,<2.0.0", # Sticking to Pydantic v1 for now
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0,<8.0.0",
+    "pytest-asyncio>=0.20.0,<0.22.0",
+    "httpx>=0.24.0,<0.26.0",
+]
 
 [project.scripts]
 rentaboat = "rentaboat:main"
