@@ -1,0 +1,17 @@
+[project]
+name = "rentaboat"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mario Winterer", email = "mario.winterer@scch.at" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+rentaboat = "rentaboat:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
