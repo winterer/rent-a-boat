@@ -7,7 +7,9 @@ authors = [
     { name = "Mario Winterer", email = "mario.winterer@scch.at" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+]
 
 [project.scripts]
 rentaboat = "rentaboat:main"
