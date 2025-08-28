@@ -48,7 +48,20 @@ fake_boats_db: list[Boat] = [
 
 
 @router.get("/")
-async def read_boats():
+async def read_boats(q: str | None = None):
+    if q:
+        search_results = [
+            boat
+            for boat in fake_boats_db
+            if q.lower()
+            in (
+                boat.name.lower()
+                + boat.type.lower()
+                + boat.manufacturer.lower()
+                + boat.model.lower()
+            )
+        ]
+        return search_results
     return fake_boats_db
 
 
