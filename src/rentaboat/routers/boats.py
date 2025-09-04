@@ -68,6 +68,15 @@ fake_boats_db: list[Boat] = [
         year=2021,
         price_per_week=25000.0,
     ),
+    Boat(
+        id=uuid4(),
+        name="Speedy",
+        type="motor",
+        manufacturer="Fast Boats Ltd.",
+        model="FB123",
+        year=2022,
+        price_per_week=12000.0,
+    ),
 ]
 
 
@@ -100,6 +109,46 @@ async def read_boats():
         ]
     """
     return fake_boats_db
+
+
+@router.get("/search")
+async def search_boats(
+    q: str | None = None,
+    type: BoatType | None = None,
+    max_price: float | None = None,
+    min_year: int | None = None,
+):
+    """
+    Search for boats with specific criteria.
+
+    This endpoint allows for filtering boats based on a search query, type,
+    maximum price, and minimum year of manufacture. All parameters are optional.
+
+    Args:
+        q (str, optional): Text search across name, manufacturer, and model.
+        type (BoatType, optional): Filter by type of boat.
+        max_price (float, optional): Filter by maximum price per week.
+        min_year (int, optional): Filter by minimum manufacturing year.
+
+    Returns:
+        list[Boat]: A list of boats that match the search criteria.
+    """
+    results = fake_boats_db
+    if q:
+        results = [
+            b
+            for b in results
+            if q.lower() in b.name.lower()
+            or q.lower() in b.manufacturer.lower()
+            or q.lower() in b.model.lower()
+        ]
+    if type:
+        results = [b for b in results if b.type == type]
+    if max_price is not None:
+        results = [b for b in results if b.price_per_week <= max_price]
+    if min_year is not None:
+        results = [b for b in results if b.year >= min_year]
+    return results
 
 
 @router.get("/{boat_id}")
