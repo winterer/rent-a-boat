@@ -1,3 +1,4 @@
+"""The main entry point for the Rent-a-Boat application."""
 from fastapi import FastAPI
 
 from .routers import boats

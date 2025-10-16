@@ -14,6 +14,8 @@ type BoatType = Literal["sailing", "motor", "row"]
 
 
 class Boat(BaseModel):
+    """Represents a boat available for rent."""
+
     id: UUID = Field(default_factory=uuid4)
     name: str = Field(description="The name of the boat")
     type: BoatType = Field(description="The type of the boat")
@@ -49,11 +51,23 @@ fake_boats_db: list[Boat] = [
 
 @router.get("/")
 async def read_boats():
+    """Returns a list of all boats."""
     return fake_boats_db
 
 
 @router.get("/{boat_id}")
 async def read_boat(boat_id: UUID):
+    """Returns a single boat by its ID.
+
+    Args:
+        boat_id: The UUID of the boat to retrieve.
+
+    Raises:
+        HTTPException: If the boat with the given ID is not found.
+
+    Returns:
+        The boat with the specified ID.
+    """
     boat = next((boat for boat in fake_boats_db if boat.id == boat_id), None)
     if boat is None:
         raise HTTPException(status_code=404, detail="Boat not found")
