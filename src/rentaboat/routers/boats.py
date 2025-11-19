@@ -1,3 +1,4 @@
+"""This module defines the API routes for managing boats."""
 from typing import Literal
 from uuid import UUID, uuid4
 
@@ -14,6 +15,18 @@ type BoatType = Literal["sailing", "motor", "row"]
 
 
 class Boat(BaseModel):
+    """Represents a boat available for rent.
+
+    Attributes:
+        id: The unique identifier of the boat.
+        name: The name of the boat.
+        type: The type of the boat.
+        manufacturer: The manufacturer of the boat.
+        model: The model of the boat.
+        year: The manufacturing year of the boat.
+        price_per_week: The rental price per week for the boat.
+    """
+
     id: UUID = Field(default_factory=uuid4)
     name: str = Field(description="The name of the boat")
     type: BoatType = Field(description="The type of the boat")
@@ -49,11 +62,27 @@ fake_boats_db: list[Boat] = [
 
 @router.get("/")
 async def read_boats():
+    """Retrieves a list of all available boats.
+
+    Returns:
+        A list of `Boat` objects.
+    """
     return fake_boats_db
 
 
 @router.get("/{boat_id}")
 async def read_boat(boat_id: UUID):
+    """Retrieves a specific boat by its ID.
+
+    Args:
+        boat_id: The UUID of the boat to retrieve.
+
+    Returns:
+        The `Boat` object corresponding to the given ID.
+
+    Raises:
+        HTTPException: If no boat with the specified ID is found.
+    """
     boat = next((boat for boat in fake_boats_db if boat.id == boat_id), None)
     if boat is None:
         raise HTTPException(status_code=404, detail="Boat not found")
